@@ -1,7 +1,10 @@
 // Function definations for reading from a file
+// Functions declared in filesort.h now
+
 #include <stdio.h>
-#include "fileread.h"
 #include <stdlib.h>
+#include <ctype.h>
+#include "filesort.h"
 
 // states
 #define FIRST 1
@@ -9,15 +12,15 @@
 #define NEWLINE 3
 
 // Line linked list functions
-Line *addLine(int ch)
+line addLine(int ch)
 {
-    Line *line_ptr = (Line *)malloc(sizeof(Line));
+    line line_ptr = (line)malloc(sizeof(struct Line));
     if (line_ptr == NULL)
     {
         printf("Unable to malloc line pointer from heap memory\n");
         return NULL;
     }
-    line_ptr -> firstword = ch;
+    line_ptr -> data = ch;
     line_ptr -> content = NULL;
     line_ptr -> next = NULL;
 
@@ -25,9 +28,9 @@ Line *addLine(int ch)
 }
 
 // Alphabet linked list functions
-alphabet *addAlphabet(int ch)
+alphabet addAlphabet(int ch)
 {
-    alphabet *alpha_ptr = (alphabet *)malloc(sizeof(alphabet));
+    alphabet alpha_ptr = (alphabet)malloc(sizeof(struct Alphabet));
     if (alpha_ptr == NULL)
     {
         printf("Unable to malloc alphabet pointer from heap memory\n");
@@ -38,7 +41,7 @@ alphabet *addAlphabet(int ch)
 }
 
 // File input
-Line * get_file(FILE *fileptr)
+line get_file(FILE *fileptr)
 {
     // If file DNE or empty
     if (fileptr == NULL)
@@ -46,9 +49,9 @@ Line * get_file(FILE *fileptr)
         printf("Unable to access file\n");
     }
 
-    Line *head = NULL;
-    Line *lineptr = NULL;
-    alphabet *alphaptr = NULL;
+    line head = NULL;
+    line lineptr = NULL;
+    alphabet alphaptr = NULL;
 
     // Start reading
     char ch;
@@ -69,12 +72,12 @@ Line * get_file(FILE *fileptr)
             // Start of file
             if (head == NULL)
             {
-                head = addLine(ch);
+                head = addLine(toupper(ch));
                 lineptr = head;
             }
             else
             {
-                lineptr -> next = addLine(ch);
+                lineptr -> next = addLine(toupper(ch));
                 lineptr = lineptr -> next;
             }
 
@@ -99,14 +102,15 @@ Line * get_file(FILE *fileptr)
         }
     }
 
+    // TODO : Case for line ordering UPPERCASE LOWERCASE
     return head;
 }
 
 // Display structure contents
-void Disp_contents(Line *read)
+void Disp_contents(line read)
 {
     printf("Reading\n");
-    alphabet *alpharead = NULL;
+    alphabet alpharead = NULL;
     int count = 0;
     while (read != NULL)
     {
@@ -124,11 +128,11 @@ void Disp_contents(Line *read)
 }
 
 // Free structure contents
-void Free_contents(Line *free_ptr)
+void Free_contents(line free_ptr)
 {
-    Line *free_ptr2 = NULL;
-    alphabet *alpha_ptr = NULL;
-    alphabet *alpha_ptr2 = NULL;
+    line free_ptr2 = NULL;
+    alphabet alpha_ptr = NULL;
+    alphabet alpha_ptr2 = NULL;
 
     int i = 0, j = 0;
     while (free_ptr != NULL)
@@ -150,5 +154,6 @@ void Free_contents(Line *free_ptr)
         j++;
     }
     printf("Lines freed: %d\n", j);
+    return;
 }
 
