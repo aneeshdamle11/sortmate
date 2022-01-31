@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include "filesort.h"
+#include <ctype.h>
 
 // Counts number of lines
 int count_lines(line counter)
@@ -26,6 +27,48 @@ line advance_lineptr(line L, int n)
         }
     }
     return L;
+}
+
+// Alphabet sort : Case Sensitive handling for same line
+int sort_casesensitive(alphabet cscheck1, alphabet cscheck2)
+{
+    if (cscheck1 -> val == '\n')
+    {
+        return -1;
+    }
+    else if (cscheck1 -> val > cscheck2 -> val)
+    {
+        return -1;
+    }
+    else if (cscheck2 -> val < cscheck1 -> val)
+    {
+        return 1;
+    }
+    else
+    {
+        return sort_casesensitive(cscheck1 -> next, cscheck2 -> next);
+    }
+}
+
+// Alphabet sort : Case if first letter is same
+int sort_alphabets(alphabet alph1, alphabet alph2)
+{
+    if (alph1 -> val == '\n')
+    {
+        return -1;
+    }
+    else if (toupper(alph1 -> val) < toupper(alph2 -> val))
+    {
+        return -1;
+    }
+    else if (toupper(alph2 -> val) < toupper(alph1 -> val))
+    {
+        return 1;
+    }
+    else
+    {
+        return sort_alphabets(alph1 -> next, alph2 -> next);
+    }
 }
 
 // MergeSort linked line
@@ -54,7 +97,7 @@ line merge2lines(line l1, line l2, int n1, int n2)
     // Keep one line to return, keep inserting elements from other line
 
     line head = NULL, prev = NULL;
-    int i = 0, j = 0;
+    int i = 0, j = 0, order = 0;
 
     // Null Cases
     if (l1 == NULL && l2 == NULL)
@@ -72,13 +115,23 @@ line merge2lines(line l1, line l2, int n1, int n2)
     }
 
     // Head
-    if (l1 -> data <= l2 -> data)
+    // Comparing next string if same data
+    if (l1 -> data == l2 -> data)
+    {
+        order = sort_alphabets(l1 -> content, l2 -> content);
+        // Handle UPPERCASE, LOWERCASE if same otherwise
+        if (order == 0)
+        {
+            order = sort_casesensitive(l1 -> content, l2 -> content);
+        }
+    }
+    if ((l1 -> data < l2 -> data) || order < 0)
     {
         head = l1;
         l1 = l1 -> next;
         i++;
     }
-    else if (l2 -> data < l1 -> data)
+    if ((l2 -> data < l1 -> data) || order > 0)
     {
         head = l2;
         l2 = l2 -> next;
@@ -90,13 +143,23 @@ line merge2lines(line l1, line l2, int n1, int n2)
     // Insert smaller elemnt
     while (i < n1 && j < n2)
     {
-        if (l1 -> data <= l2 -> data)
+        order = 0;
+        if (l1 -> data == l2 -> data)
+        {
+            order = sort_alphabets(l1 -> content, l2 -> content);
+            // Case sensitive handling
+            if (order == 0)
+            {
+                order = sort_casesensitive(l1 -> content, l2 -> content);
+            }
+        }
+        if ((l1 -> data < l2 -> data) || order < 0)
         {
             prev = l1;
             l1 = l1 -> next;
             i++;
         }
-        else if (l2 -> data < l1 -> data)
+        if ((l2 -> data < l1 -> data) || order > 0)
         {
             prev -> next = l2;
             l2 = l2 -> next;

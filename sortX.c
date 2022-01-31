@@ -14,11 +14,12 @@ int main(int argc, char *argv[])
     // File input
     FILE *fileptr = fopen(argv[1], "r");
 
-    // Read file contents
+    // Read and copy file contents
     line head = get_file(fileptr);
 
-    // TODO : Merge
+    // Sort file contents
     head = mergesort_line(head, count_lines(head));
+
     // Display contents
     Disp_contents(head);
 

@@ -109,7 +109,7 @@ line get_file(FILE *fileptr)
 // Display structure contents
 void Disp_contents(line read)
 {
-    printf("Reading\n");
+    //printf("Reading\n");
     alphabet alpharead = NULL;
     int count = 0;
     while (read != NULL)
@@ -148,12 +148,12 @@ void Free_contents(line free_ptr)
             free(alpha_ptr2);
             i++;
         }
-        printf("Alphabets freed: %d\n", i);
+        //printf("Alphabets freed: %d\n", i);
 
         free(free_ptr2);
         j++;
     }
-    printf("Lines freed: %d\n", j);
+    // printf("Lines freed: %d\n", j);
     return;
 }
 
