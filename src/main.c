@@ -9,14 +9,14 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    FILE *fileptr = fopen(argv[1], "r");
-    if (!fileptr) {
+    FILE *fp = fopen(argv[1], "r");
+    if (!fp) {
         printf("Cannot open file.\n");
         return 2;
     }
 
     // Read and copy file contents
-    line head = get_file(fileptr);
+    line head = get_file(fp);
 
     // Sort file contents
     head = mergesort_line(head, count_lines(head));
@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
 
     // Free contents
     Free_contents(head);
-    fclose(fileptr);
+    fclose(fp);
 
     return 0;
 }

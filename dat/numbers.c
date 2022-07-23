@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 
     srand(time(NULL));
     for (int i = 0; i < n; i++) {
-        fprintf(fp, "%d\n", rand() % 10000);
+        fprintf(fp, "%d\n", rand());
     }
     printf("Done.\n");
 

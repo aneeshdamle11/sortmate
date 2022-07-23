@@ -1,2 +1,2 @@
-# DSA_sortLinux
-Implementin GNU-Linux sort command
+# sortmate
+Sorting crazy large files of numbers!
