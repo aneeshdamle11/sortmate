@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
         return 2;
     }
 
-    printf("Random numbers from 0-10000 will be generated in number.txt\nGenerating...");
+    printf("Random numbers from 0-10000 will be generated in numbers.txt\nGenerating...");
     int n = atoi(argv[1]);
 
     srand(time(NULL));
