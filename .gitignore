@@ -1,0 +1,5 @@
+# Used to specify a class of files that we don't want Git to automatically add,
+# or even show us as being untracked
+# Ask Git to ignore any files ending in ".o" or ".a" = object and archive files
+*.[oa]
+a.out

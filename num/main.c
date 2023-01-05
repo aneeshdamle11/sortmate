@@ -30,6 +30,8 @@ int main(int argc, char *argv[]) {
     {
         printf("Usage: ./a.out [option] infile outfile\n");
         printf("Sorts the unsorted infile and stores it in outfile.\n");
+        printf("-n : normal sort\n");
+        printf("-r : reverse sort\n");
         return 3;
     }
 
