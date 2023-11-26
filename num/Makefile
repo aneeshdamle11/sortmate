@@ -1,5 +1,5 @@
 make: main.o external_sort.o sort.o min_heap.o max_heap.o
-	cc main.o external_sort.o sort.o min_heap.o max_heap.o -g -Wall -Werror -lm
+	cc -o num main.o external_sort.o sort.o min_heap.o max_heap.o -g -Wall -Werror -lm
 main.o: main.c external_sort.h
 	cc -c main.c
 external_sort.o: external_sort.c external_sort.h sort.o min_heap.o max_heap.o

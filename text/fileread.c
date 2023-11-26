@@ -36,6 +36,7 @@ alphabet addAlphabet(int ch)
     }
     alpha_ptr -> val = ch;
     alpha_ptr -> next = NULL;
+    return alpha_ptr;
 }
 
 // File input
