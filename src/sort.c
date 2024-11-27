@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <stdio.h>
 #include <string.h>
 #include "sort.h"
 
@@ -20,12 +21,13 @@ Else ASCII order
 ret: 0 if str1 <= str2, 1 if str1 > str2
 */
 int compare_lines(char str1[], char str2[]) {
+    // check options
     int size1 = LENGTH(str1), size2 = LENGTH(str2);
     for (int i = 0; i < ((size1 < size2) ? size1 : size2); i++) {
         int res = compare_char(str1[i], str2[i]);
-        if (res != 0) return res > 0? 1 : 0;
+        if (res != 0) return f_reverse ^ (res > 0);
     }
-    return size1 > size2;
+    return f_reverse ^ (size1 > size2);
 }
 
 void swap(char **s1, char **s2) {
