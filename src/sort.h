@@ -6,6 +6,4 @@
 int compare_lines(char str1[], char str2[]);
 void bubblesort(char *arr[], int size);
 
-extern int f_reverse;
-
 #endif /* ifndef SORT_H */

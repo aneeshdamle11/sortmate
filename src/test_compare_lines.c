@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 #include "sort.h"
 
 int num = 0;
@@ -9,7 +8,7 @@ int success = 0;
 void runTest(char str1[], char str2[], int expected) {
     printf("[TEST %d] ", num);
 
-    int result = compare_lines(str1, LENGTH(str1), str2, LENGTH(str2));
+    int result = compare_lines(str1, str2);
     printf("Compare \"%s\" and \"%s\": ", str1, str2);
     if (result == expected) success++, printf("PASSED\n");
     else printf("FAILED (Expected: %d, Got: %d)\n", expected, result);
@@ -62,6 +61,6 @@ int main() {
     runTest("", "abc", 0);         // Empty string smaller
     runTest("abc", "", 1);         // Non-empty string greater
 
-    printf("\n[TEST SUMMARY]:\nTOTAL: %d\tSUCCESS: %d\tFAILED: %d\n", num, success, num-success);
+    printf("\n[TEST SUMMARY] TOTAL: %d\tSUCCESS: %d\tFAILED: %d\n", num, success, num-success);
     return 0;
 }

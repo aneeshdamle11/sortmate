@@ -1,7 +1,7 @@
 #include <ctype.h>
-#include <stdio.h>
 #include <string.h>
 #include "sort.h"
+#include "iohelper.h"
 
 #define LENGTH(str) strnlen(str, MAX_LINE_LENGTH)
 
