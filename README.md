@@ -31,3 +31,5 @@ The underlying implementation uses various sorting techniques, and is fun to imp
 ## Scope for improvement
 1. Unique functionalities of both text and number implementations could be merged.
 2. Underlying modifications could be automated.
+
+TODO: Add testing for reverse, numeric sort

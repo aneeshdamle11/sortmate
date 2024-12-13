@@ -29,9 +29,39 @@ int compare_lines(char str1[], char str2[]) {
     return size1 - size2;
 }
 
+int starts_with_num(char str[]) {
+    if (LENGTH(str) > 0) return isdigit(str[0]);
+    else return 0;
+}
+
+int get_starting_num(char str[]) {
+    int n = LENGTH(str);
+    int num = 0;
+    int i = 0;
+    while (i < n && isdigit(str[i])) {
+        num = num * 10;
+        num += str[i] - '0';
+        i++;
+    }
+    return num;
+}
+
 /* wrapper function to checks flags before actual line comparison */
 int is_swap_needed(char l1[], char l2[]) {
-    return (rflag == 0 ? compare_lines(l1, l2) : compare_lines(l2, l1)) > 0;
+    if (nflag == 1) {
+        if (starts_with_num(l1) && starts_with_num(l2)) {
+            int res1 = get_starting_num(l1);
+            int res2 = get_starting_num(l2);
+            if (res1 != res2) {
+                return rflag ^ (res1 > res2);
+            }
+        } else if (starts_with_num(l1)) {
+            return rflag ^ 1;
+        } else if (starts_with_num(l2)) {
+            return rflag ^ 0;
+        }
+    }
+    return rflag ^ (compare_lines(l1, l2) > 0);
 }
 
 void swap(char **s1, char **s2) {
