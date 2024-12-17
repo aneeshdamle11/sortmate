@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include "sort.h"
 
-int rflag = 0;
-int nflag = 0;
+int rflag = 0, nflag = 0, kflag = 0, kopt = 0;
 
 void help(void) {
     printf("Usage: ./sortmate [OPTIONS]... [FILE]...\n");
@@ -12,6 +11,7 @@ void help(void) {
     printf("  -h\tdisplay this help message and exit.\n");
     printf("  -r\treverse the result of comparisons\n");
     printf("  -n\tcompare strings with their numeric value\n");
+    printf("  -k COL\tsort via the column number\n");
 }
 
 void print_array(char *arr[], int n) {
@@ -20,9 +20,9 @@ void print_array(char *arr[], int n) {
 
 int main(int argc, char *argv[]) {
 
+    // TODO: OPTION-combinations
     int c;
-    char *ofile = NULL;
-    while ((c = getopt(argc, argv, "hrn")) != -1) {
+    while ((c = getopt(argc, argv, "hrnk:")) != -1) {
         switch(c) {
             case 'h':
                 help();
@@ -33,24 +33,26 @@ int main(int argc, char *argv[]) {
             case 'n':
                 nflag = 1;
                 break;
-            /*
-            case 'o':
-                ofile = optarg;
+            case 'k':
+                kflag = 1;
+                kopt = atoi(optarg);
                 break;
-            */
             case '?':
                 printf("Try './sortmate -h' for more information\n");
                 return 1;
         }
     }
 
-    // take input
+    // get input
     char *lines[] = {
-        "10Apple2",
-        "100banana1",
-        "50orange",
-        "60Grape",
-        "10pineapple",
+        "abc Abc x",
+        "Abc abc w",
+        "20Apple2 xyz v",
+        "10Apple2 xyz f",
+        "100banana1 wxy g",
+        "50orange Orange e",
+        "60Grape grape b ",
+        "10pineapple def a",
     };
 
     // sort

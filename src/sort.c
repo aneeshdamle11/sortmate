@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <ctype.h>
 #include <string.h>
 #include "sort.h"
@@ -46,8 +47,38 @@ int get_starting_num(char str[]) {
     return num;
 }
 
+int howmanychars(char str[], char c) {
+    int count = 0;
+    for (int i = 0; i < strlen(str); i++) if (str[i] == c) count++;
+    return count;
+}
+
 /* wrapper function to checks flags before actual line comparison */
 int is_swap_needed(char l1[], char l2[]) {
+    // TODO: Simplify this snippet
+    if (kflag == 1) {
+        int spaces1 = howmanychars(l1, ' '), spaces2 = howmanychars(l2, ' ');
+        if (kopt > (spaces1 + 1) && kopt > (spaces2 + 1)) {
+            return rflag ^ (compare_lines(l1, l2) > 0);
+        } else if (kopt > spaces1 + 1) {
+            return rflag ^ 0;
+        } else if (kopt > spaces2 + 1) {
+            return rflag ^ 1;
+        }
+        char *kstr1 = l1, *kstr2 = l2;
+        for (int i = 1; i < kopt; i++) {
+            kstr1 = strchr(kstr1, ' ');
+            kstr1++;
+            kstr2 = strchr(kstr2, ' ');
+            kstr2++;
+        }
+        int kres = compare_lines(kstr1, kstr2);
+        if (kres != 0) {
+            return rflag ^ (kres > 0);
+        }
+    }
+
+    // TODO: Simplify this snippet
     if (nflag == 1) {
         if (starts_with_num(l1) && starts_with_num(l2)) {
             int res1 = get_starting_num(l1);
