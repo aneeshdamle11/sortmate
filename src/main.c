@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "sort.h"
 
-int rflag = 0, nflag = 0, kflag = 0, kopt = 0;
+int rflag = 0, nflag = 0, kflag = 0, kopt = 0, cflag = 0;
 
 void help(void) {
     printf("Usage: ./sortmate [OPTIONS]... [FILE]...\n");
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
     // TODO: OPTION-combinations
     int c;
-    while ((c = getopt(argc, argv, "hrnk:")) != -1) {
+    while ((c = getopt(argc, argv, "hrnk:c")) != -1) {
         switch(c) {
             case 'h':
                 help();
@@ -36,6 +36,9 @@ int main(int argc, char *argv[]) {
             case 'k':
                 kflag = 1;
                 kopt = atoi(optarg);
+                break;
+            case 'c':
+                cflag = 1;
                 break;
             case '?':
                 printf("Try './sortmate -h' for more information\n");

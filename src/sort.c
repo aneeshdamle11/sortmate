@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 #include "sort.h"
@@ -104,8 +105,16 @@ void swap(char **s1, char **s2) {
 
 void bubblesort(char *arr[], int size) {
     // at the end of each 'i' round, the largest element bubbles at the end
-    while (size-- > 0)
-        for (int j = 0; j < size; j++)
-            if (is_swap_needed(arr[j], arr[j+1])) swap(&arr[j], &arr[j+1]);
+    while (size-- > 0) {
+        for (int j = 0; j < size; j++) {
+            if (is_swap_needed(arr[j], arr[j+1])) {
+                if (cflag == 1)
+                    printf("disorder: %s\n", arr[j+1]), exit(EXIT_SUCCESS);
+                else
+                    swap(&arr[j], &arr[j+1]);
+            }
+        }
+    }
+    if (cflag == 1) return exit(EXIT_SUCCESS);
     return;
 }
