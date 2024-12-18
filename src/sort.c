@@ -8,10 +8,7 @@
 
 // ret: equal=0, smaller=-ve, greater=+ve
 int compare_char(char a, char b) {
-    if ((isalpha(a) && isalpha(b)) && (a != b) && (tolower(a) == tolower(b)))
-        return b - a;
-    else
-        return tolower(a) - tolower(b);
+    return tolower(a) - tolower(b);
 }
 
 /*
@@ -24,10 +21,15 @@ ret: -ve if str1 < str2, 0 if str1 == str2, +ve if str1 > str2
 int compare_lines(char str1[], char str2[]) {
     // check options
     int size1 = LENGTH(str1), size2 = LENGTH(str2);
+    int firstcasechar = -1;
+    // initially, check case-insensitive
     for (int i = 0; i < ((size1 < size2) ? size1 : size2); i++) {
-        int res = compare_char(str1[i], str2[i]);
+        int res = compare_char(tolower(str1[i]), tolower(str2[i]));
         if (res != 0) return res;
+        else if (firstcasechar == -1 && str1[i] != str2[i]) firstcasechar = i;
     }
+    // then check case-sensitive
+    if (firstcasechar != -1) return str2[firstcasechar] - str1[firstcasechar];
     return size1 - size2;
 }
 
