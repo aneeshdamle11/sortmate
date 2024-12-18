@@ -4,7 +4,7 @@
 #include <string.h>
 #include "sort.h"
 
-#define LENGTH(str) strnlen(str, MAX_LINE_LENGTH)
+#define LENGTH(str) strnlen(str, MAX_LEN)
 
 // ret: equal=0, smaller=-ve, greater=+ve
 int compare_char(char a, char b) {
