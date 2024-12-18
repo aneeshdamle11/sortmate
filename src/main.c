@@ -94,6 +94,5 @@ int main(int argc, char *argv[]) {
     if (buffer) free(buffer);
     buffer = NULL;
 
-
     return 0;
 }
