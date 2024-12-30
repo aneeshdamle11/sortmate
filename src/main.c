@@ -22,7 +22,6 @@ void print_array(char *arr[], int n) {
 
 int main(int argc, char *argv[]) {
 
-    // TODO: OPTION-combinations
     int c;
     while ((c = getopt(argc, argv, "hrnk:c")) != -1) {
         switch(c) {
@@ -96,3 +95,12 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
+/*
+main:
+    get_flags
+    while (input)
+        buffer = get_line
+        sort_buffer
+        write buffer
+*/

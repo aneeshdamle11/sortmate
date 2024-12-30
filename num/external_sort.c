@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <limits.h>
 #include "external_sort.h"
-#include "sort.h"
 #include "heap/heap.h"
 
 

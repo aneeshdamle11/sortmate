@@ -1,9 +1,0 @@
-Hello, world!
-gimple
-abcdef
-gnu
-gcc
-gitlab
-github
-GCC
-HELLO!
