@@ -21,8 +21,7 @@ void run_test(char str1[], char str2[], int expected) {
     return;
 }
 
-int rflag = 0;
-int nflag = 0;
+int rflag = 0, nflag = 0, kflag = 0, kopt = 0, cflag = 0;
 
 int main() {
     printf("Script to test string comparison. Running tests...\n");
