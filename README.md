@@ -26,6 +26,6 @@ how 2 lines are compared
 - sorting algorithm's function pointers
 - flags and some useful examples
 - how does the system log
-- implementation of external sorting
-- explanation on parallelization
+- conundrum of external sort
+- parallelization
 
