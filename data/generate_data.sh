@@ -2,7 +2,7 @@
 
 # Variables to configure line length and number of lines
 LINE_LENGTH=100
-TOTAL_LINES=1024
+TOTAL_LINES=20
 
 # Function to generate a random line of specified length and columns
 generate_random_line() {

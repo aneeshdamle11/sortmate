@@ -2,8 +2,9 @@
 #define IO_H (1)
 #include <stdio.h>
 
-#define MAX_LEN (128)
-#define MAX_LINES (1024)
+#define MAX_LINES (5)
+#define MAX_LEN (1024)
+#define TEMPSPACE_DIR ("temp")
 #define DEFAULT_INPUT ("data/default.txt")
 
 extern int rflag, nflag, kflag, kopt, cflag;
