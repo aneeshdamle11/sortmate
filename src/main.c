@@ -21,7 +21,6 @@ void print_array(char *arr[], int n) {
 }
 
 int main(int argc, char *argv[]) {
-
     int c;
     while ((c = getopt(argc, argv, "hrnk:c")) != -1) {
         switch(c) {
