@@ -88,6 +88,7 @@ int main(int argc, char *argv[]) {
         snprintf(fname, sizeof(fname), "%s/tmp%d", TEMPSPACE_DIR, i);
         //print_array(buffer, nlines);
         clear_buffer(buffer, nlines, fname);
+        free(buffer);
         buffer = NULL;
     }
 
