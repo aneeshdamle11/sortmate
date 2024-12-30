@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "sort.h"
+#include "io.h"
 
 #define LENGTH(str) strnlen(str, MAX_LEN)
 
