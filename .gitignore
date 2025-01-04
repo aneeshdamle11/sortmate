@@ -3,3 +3,7 @@
 # Ask Git to ignore any files ending in ".o" or ".a" = object and archive files
 *.[oa]
 a.out
+
+# coc-nvim relates
+.cache/
+compile_commands.json

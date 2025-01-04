@@ -49,8 +49,11 @@ void get_flags(int argc, char *argv[]) {
 }
 
 void open_infile(int argc, char *argv[]) {
-    if (optind < argc) infile = fopen(argv[optind], "r");
-    else infile = fopen(DEFAULT_INPUT, "r");
+    if (optind < argc)
+        infile = fopen(argv[optind], "r");
+    else
+        infile = fopen(DEFAULT_INPUT, "r");
+
     if (!infile) {
         perror("invalid input");
         exit(EXIT_FAILURE);
@@ -58,12 +61,15 @@ void open_infile(int argc, char *argv[]) {
     return;
 }
 
-void close_infile(void) {
-    fclose(infile);
-    infile = NULL;
+void close_infile() {
+    if (fclose(infile) != 0) {
+        perror("fclose");
+        return;
+    }
     return;
 }
 
+// gets flags, opens input file
 void init_sortmate_io(int argc, char *argv[]) {
     get_flags(argc, argv);
     open_infile(argc, argv);

@@ -1,97 +1,72 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
 #include "sort.h"
 #include "io.h"
 
-void init_sortmate(int argc, char *argv[]) {
-    // get flags and open input file
-    init_sortmate_io(argc, argv);
+char **buffer = NULL;
 
-    // make a temporary space
-    if (mkdir(TEMPSPACE_DIR, 0755) != 0) {
-        perror("Failed to create directory");
-        exit(EXIT_FAILURE);
-    }
-    return;
-}
-
-char ** init_buffer(void) {
-    char **buffer = (char**)malloc(sizeof(char*) * MAX_LINES);
-    if (!buffer) {
+int init_buffer(void) {
+    buffer = (char**)malloc(sizeof(char*) * MAX_LINES);
+    if (buffer == NULL) {
         perror("malloc");
-        exit(EXIT_FAILURE);
+        return 1;
     }
     for (int i = 0; i < MAX_LINES; i++) {
         buffer[i] = NULL;
     }
-    return buffer;
+    return 0;
+}
+
+void init_sortmate(int argc, char *argv[]) {
+    // initialize io (flags and files)
+    get_flags(argc, argv);
+    open_infile(argc, argv);
+    // initialize main temporary space
+    if (init_buffer() != 0) {
+        close_infile();
+        exit(EXIT_FAILURE);
+    }
 }
 
 void cleanup(void) {
+    // cleanup io
     close_infile();
-    // TODO: remove temporary space
+    // cleanup main temporary space
+    for (int i = 0; i < MAX_LINES; i++)
+        if (buffer[i] != NULL)
+            free(buffer[i]), buffer[i] = NULL;
+    free(buffer);
+    buffer = NULL;
     return;
 }
 
-// transfer contents of buffer into outfile, and cleanup the buffer
-void clear_buffer(char **buffer, int size, char *outfilename) {
-    FILE *outfile = fopen(outfilename, "w");
-    if (!outfile) {
-        printf("Could not open %s for writing\n", outfilename);
-        exit(EXIT_FAILURE);
-    }
-    for (int i = 0; i < size; i++) {
-        if (buffer[i])
-            fprintf(outfile, "%s\n", buffer[i]);
-        free(buffer[i]);
-        buffer[i] = NULL;
-    }
-    return;
-}
-
-/*
-main:
-    get_flags
-    while (input)
-        buffer = get_line
-        sort_buffer
-        write buffer
-*/
 int main(int argc, char *argv[]) {
     // initialize flags, input file and temporary space
     init_sortmate(argc, argv);
 
-    // while (more input)
-    int i = 0;
-    while(!feof(infile)) {
-        char **buffer = init_buffer();
-        int nlines = 0;
-        size_t len = 0;
-        ssize_t ch_read = 0;
-        while ((ch_read = getline(&buffer[nlines], &len, infile) != -1)) {
-            if (ch_read == -1) {
-                free(buffer[nlines]);
-                perror("getline error");
-                return 2;
-            }
-            buffer[nlines][strcspn(buffer[nlines], "\n")] = '\0';
-            nlines++;
-            if (nlines >= MAX_LINES) break;
+    int i;
+    for (i = 0; i < MAX_LINES; i++) {
+        // allocate buffer
+        buffer[i] = (char *)malloc(sizeof(char) * MAX_LEN);
+        if (buffer[i] == NULL) {
+            perror("buffer[i] malloc");
+            cleanup();
+            return 2;
         }
-        // sort
-        bubblesort(buffer, nlines);
-        // output
-        printf("Buffer batch: %d\n", i++);
-        char fname[256];
-        snprintf(fname, sizeof(fname), "%s/tmp%d", TEMPSPACE_DIR, i);
-        //print_array(buffer, nlines);
-        clear_buffer(buffer, nlines, fname);
-        free(buffer);
-        buffer = NULL;
+        if (!fgets(buffer[i], MAX_LEN, infile)) {
+            free(buffer[i]);
+            buffer[i] = NULL;
+            break;
+        }
+        buffer[i][strcspn(buffer[i], "\n")] = '\0';
     }
 
+    bubblesort(buffer, i);
+
+    print_array(buffer, i);
+
+    // merge chunks
     cleanup();
 
     return 0;
