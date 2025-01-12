@@ -23,7 +23,7 @@ $ make clean
 
 The `docs` folder includes a detailed documentation on the features:
 how 2 lines are compared
-- sorting algorithm's function pointers
+- the actual sorting
 - flags and some useful examples
 - how does the system log
 - conundrum of external sort
