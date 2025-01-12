@@ -10,7 +10,8 @@
  */
 #define DEFAULT_INPUT ("data/mini.txt")
 
-extern int rflag, nflag, kflag, kopt, cflag;
+extern int rflag, nflag, kflag, kopt, cflag, sflag;
+extern char sopt;
 extern FILE *infile;
 
 void get_flags(int argc, char *argv[]);

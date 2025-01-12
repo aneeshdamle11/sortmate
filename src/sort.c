@@ -58,7 +58,7 @@ int howmanychars(char str[], char c) {
 }
 
 /* wrapper function to checks flags before actual line comparison */
-int is_swap_needed(char l1[], char l2[]) {
+int is_swap_needed(char *l1, char *l2) {
     // TODO: Simplify this snippet
     if (kflag == 1) {
         int spaces1 = howmanychars(l1, ' '), spaces2 = howmanychars(l2, ' ');
@@ -119,5 +119,27 @@ void bubblesort(char *arr[], int size) {
         }
     }
     if (cflag == 1) return exit(EXIT_SUCCESS);
+    return;
+}
+
+int is_qsort_swap_needed(const void* a, const void* b) {
+    const char *str1 = *(const char **)a;
+    const char *str2 = *(const char **)b;
+    int res = is_swap_needed((char*)str1, (char*)str2);
+    if (cflag == 1 && res == 1) {
+        printf("disorder: %s\n", str2), exit(EXIT_SUCCESS);
+    }
+    return res;
+}
+
+void sort(char *arr[], int size) {
+    switch (sopt) {
+        case 'b':
+            bubblesort(arr, size);
+            break;
+        case 'q':
+            qsort(arr, size, sizeof(char*), is_qsort_swap_needed);
+            break;
+    }
     return;
 }

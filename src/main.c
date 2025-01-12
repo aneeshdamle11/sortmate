@@ -5,6 +5,8 @@
 #include "io.h"
 
 char **buffer = NULL;
+int sflag = 0;
+char sopt = 'b';
 
 int init_buffer(void) {
     buffer = (char**)malloc(sizeof(char*) * MAX_LINES);
@@ -62,7 +64,7 @@ int main(int argc, char *argv[]) {
         buffer[i][strcspn(buffer[i], "\n")] = '\0';
     }
 
-    bubblesort(buffer, i);
+    sort(buffer, i);
 
     print_array(buffer, i);
 
