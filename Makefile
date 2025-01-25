@@ -4,7 +4,7 @@ sortmate:
 	$(CC) $(CFLAGS) -o sortmate src/main.c src/io.c src/sort.c -Iinclude
 
 tests:
-	$(CC) $(CFLAGS) -o test_compare_lines test/test_compare_lines.c src/sort.c -Iinclude
+	$(CC) $(CFLAGS) -o test_comparelines test/test_compare_lines.c src/sort.c -Iinclude
 
 clean:
 	rm -rf sortmate test_compare_lines temp

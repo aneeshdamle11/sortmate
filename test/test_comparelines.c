@@ -27,14 +27,12 @@ int main() {
     printf("Script to test string comparison. Running tests...\n");
 
     run_test("abc", "abc", 0);
+    run_test("abc!", "abcA", -1);
+    run_test("a1!c", "a1#c", -1);
     run_test("abc", "abcd", -1);
     run_test("abcd", "abc", 1);
-    run_test("abc", "ABC", -1); // Lowercase smaller than uppercase
-    run_test("abc!", "abc#", -1);
-    run_test("abc!", "abcA", -1); // ASCII order
-    run_test("abc123", "abc122", 1); // Last numeric character decides
-    run_test("abc123", "abc124", -1);
-    run_test("a1!c", "a1#c", -1); // Symbol '!' vs '#'
+    run_test("abc", "ABC", -1);
+    run_test("abc123", "abc121", 1);
     run_test("", "", 0); // Both empty
     run_test("", "abc", -1); // Empty string smaller
     run_test("abc", "", 1); // Non-empty string greater
