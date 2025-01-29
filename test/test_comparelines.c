@@ -8,20 +8,19 @@ int success = 0;
 void run_test(char str1[], char str2[], int expected) {
     printf("[TEST %d] ", num);
 
-    int res = compare_lines(str1, str2);
-    printf("Compare \"%s\" and \"%s\": ", str1, str2);
-    if ((res < 0 && expected < 0) || (res > 0 && expected > 0) || (res == expected)) {
-        success++;
-        printf("PASSED\n");
-    } else {
-        printf("FAILED (Expected: %d, Got: %d)\n", expected, res);
-    }
+    printf("\"%s\" VS \"%s\": ", str1, str2);
+    int result = compare_lines(str1, str2);
+    if ((expected == 0) ? (result == 0) : (result * expected > 0))
+        success++, printf("PASSED\n");
+    else
+        printf("FAILED (Expected: %d, Got: %d)\n", expected, result);
 
     num++;
     return;
 }
 
 int rflag = 0, nflag = 0, kflag = 0, kopt = 0, cflag = 0;
+char sopt = 'x';
 
 int main() {
     printf("Script to test string comparison. Running tests...\n");
@@ -37,6 +36,6 @@ int main() {
     run_test("", "abc", -1); // Empty string smaller
     run_test("abc", "", 1); // Non-empty string greater
 
-    printf("\n[TEST SUMMARY] TOTAL: %d\tSUCCESS: %d\tFAILED: %d\n", num, success, num-success);
+    printf("\n[SUMMARY] TOTAL: %d (SUCCESS: %d FAILED: %d)\n", num, success, num-success);
     return 0;
 }

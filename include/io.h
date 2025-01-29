@@ -2,7 +2,7 @@
 #define IO_H (1)
 #include <stdio.h>
 
-#define MAX_LINES (25)
+#define MAX_LINES (5)
 #define MAX_LEN (1024)
 
 /* TODO: data/mini.txt --> flag testing
@@ -10,7 +10,7 @@
  */
 #define DEFAULT_INPUT ("data/mini.txt")
 
-extern int rflag, nflag, kflag, kopt, cflag, sflag;
+extern int rflag, nflag, kflag, kopt, cflag;
 extern char sopt;
 extern FILE *infile;
 

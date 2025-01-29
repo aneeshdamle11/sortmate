@@ -5,10 +5,9 @@
 #include "io.h"
 
 char **buffer = NULL;
-int sflag = 0;
-char sopt = 'b';
 
 int init_buffer(void) {
+    //printf("Initializing buffer...\n");
     buffer = (char**)malloc(sizeof(char*) * MAX_LINES);
     if (buffer == NULL) {
         perror("malloc");
@@ -17,6 +16,7 @@ int init_buffer(void) {
     for (int i = 0; i < MAX_LINES; i++) {
         buffer[i] = NULL;
     }
+    //printf("Buffer space malloc'd\n");
     return 0;
 }
 
@@ -32,6 +32,7 @@ void init_sortmate(int argc, char *argv[]) {
 }
 
 void cleanup(void) {
+    //printf("Cleaning up...\n");
     // cleanup io
     close_infile();
     // cleanup main temporary space
@@ -40,6 +41,7 @@ void cleanup(void) {
             free(buffer[i]), buffer[i] = NULL;
     free(buffer);
     buffer = NULL;
+    //printf("Cleaning done. Ciao!\n");
     return;
 }
 
@@ -49,19 +51,15 @@ int main(int argc, char *argv[]) {
 
     int i;
     for (i = 0; i < MAX_LINES; i++) {
-        // allocate buffer
-        buffer[i] = (char *)malloc(sizeof(char) * MAX_LEN);
-        if (buffer[i] == NULL) {
-            perror("buffer[i] malloc");
+        size_t size;
+        if (getline(&buffer[i], &size, infile) != -1) {
+            //printf("Buffer %d received: size %lu bytes\n", i, size);
+            buffer[i][strcspn(buffer[i], "\n")] = '\0';
+        } else {
+            perror("getline");
             cleanup();
-            return 2;
+            exit(EXIT_FAILURE);
         }
-        if (!fgets(buffer[i], MAX_LEN, infile)) {
-            free(buffer[i]);
-            buffer[i] = NULL;
-            break;
-        }
-        buffer[i][strcspn(buffer[i], "\n")] = '\0';
     }
 
     sort(buffer, i);

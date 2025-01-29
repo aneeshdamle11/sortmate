@@ -5,6 +5,8 @@
 #include "io.h"
 
 int rflag = 0, nflag = 0, kflag = 0, kopt = 0, cflag = 0;
+char sopt = 'x';
+
 FILE *infile = NULL;
 
 void help(void) {
@@ -14,6 +16,7 @@ void help(void) {
     printf("  -r\treverse the result of comparisons\n");
     printf("  -n\tcompare strings with their numeric value\n");
     printf("  -k COL\tsort via the column number\n");
+    printf("  -c\tsimply check if input is sorted\n");
     printf("  -s ALGO\tselect the sorting algorithm (b=bubblesort,q=quicksort)\n");
     printf("NOTE: input a single file. multicolumnar sort is not supported.\n");
 }
@@ -23,6 +26,7 @@ void print_array(char *arr[], int n) {
 }
 
 void get_flags(int argc, char *argv[]) {
+    //printf("Reading flags...\n");
     int c;
     while ((c = getopt(argc, argv, "hrnk:cs:")) != -1) {
         switch(c) {
@@ -43,7 +47,6 @@ void get_flags(int argc, char *argv[]) {
                 cflag = 1;
                 break;
             case 's':
-                sflag = 1;
                 sopt = optarg[0];
                 break;
             case '?':
@@ -51,10 +54,20 @@ void get_flags(int argc, char *argv[]) {
                 exit(EXIT_FAILURE);
         }
     }
+
+    /*
+    printf("[rflag=%d] ", rflag);
+    printf("[nflag=%d] ", nflag);
+    printf("[kflag=%d,kopt=%d] ", kflag, kopt);
+    printf("[cflag=%d] ", cflag);
+    printf("[sopt=%c]\n", sopt);
+    */
+
     return;
 }
 
 void open_infile(int argc, char *argv[]) {
+    //printf("Opening input file(s)...\n");
     if (optind < argc)
         infile = fopen(argv[optind], "r");
     else
@@ -64,14 +77,17 @@ void open_infile(int argc, char *argv[]) {
         perror("invalid input");
         exit(EXIT_FAILURE);
     }
+    //printf("Initialized input file(s): %s\n", argv[optind]);
     return;
 }
 
 void close_infile() {
+    //printf("Closing input(s)...\n");
     if (fclose(infile) != 0) {
         perror("fclose");
         return;
     }
+    //printf("File closed\n");
     return;
 }
 

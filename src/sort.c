@@ -140,6 +140,9 @@ void sort(char *arr[], int size) {
         case 'q':
             qsort(arr, size, sizeof(char*), is_qsort_swap_needed);
             break;
+        default:
+            bubblesort(arr, size);
+            break;
     }
     return;
 }
