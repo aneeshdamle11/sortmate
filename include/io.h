@@ -2,7 +2,7 @@
 #define IO_H (1)
 #include <stdio.h>
 
-#define MAX_LINES (5)
+#define MAX_LINES (6)
 #define MAX_LEN (1024)
 
 /* TODO: data/mini.txt --> flag testing
