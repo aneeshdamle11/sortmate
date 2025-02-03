@@ -5,7 +5,7 @@
 #include "sort.h"
 #include "io.h"
 
-#define LENGTH(str) strnlen(str, MAX_LEN)
+#define LENGTH(str) (strnlen(str, MAXLEN))
 
 // ret: equal=0, smaller=-ve, greater=+ve
 int compare_char(char a, char b) {
@@ -20,6 +20,9 @@ Else ASCII order
 ret: -ve if str1 < str2, 0 if str1 == str2, +ve if str1 > str2
 */
 int compare_lines(char str1[], char str2[]) {
+    if (!str1 && !str2) return 0;
+    if (!str1 && str2) return 1;
+    if (str1 && !str2) return -1;
     // check options
     int size1 = LENGTH(str1), size2 = LENGTH(str2);
     int firstcasechar = -1;

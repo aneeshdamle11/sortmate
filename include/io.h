@@ -2,13 +2,10 @@
 #define IO_H (1)
 #include <stdio.h>
 
-#define MAX_LINES (6)
-#define MAX_LEN (1024)
-
 /* TODO: data/mini.txt --> flag testing
  * Change this later to data/default.txt
  */
-#define DEFAULT_INPUT ("data/mini.txt")
+#define DEFAULT_INPUT ("data/default.txt")
 
 extern int rflag, nflag, kflag, kopt, cflag;
 extern char sopt;
