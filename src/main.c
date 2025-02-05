@@ -5,7 +5,7 @@
 #include "sort.h"
 #include "io.h"
 
-#define MAXLINES (36)
+#define MAXLINES (10)
 #define TRIM_NEWLINE(s) (s[strcspn(s, "\n")] = '\0')
 
 char **buffer = NULL;
@@ -59,7 +59,7 @@ void cleanup(void) {
 
 void create_chunk(char **buffer, int index, int nlines) {
     char tmpfilename[256];
-    snprintf(tmpfilename, sizeof(tmpfilename), "tmp%d", index);
+    snprintf(tmpfilename, sizeof(tmpfilename), "tmp0%d", index);
     FILE *tmpfile = fopen(tmpfilename, "w");
     if (tmpfile == NULL) {
         perror("fopen");
@@ -81,11 +81,11 @@ int isbufferempty(void) {
     return 1;
 }
 
-void merge_chunks(int nchunks) {
-    FILE **chunkfp = (FILE **)malloc(sizeof(FILE *) * MAXLINES);
+void merge_chunks(int nchunks, int layer, int offset, int isend) {
+    FILE **chunkfp = (FILE **)malloc(sizeof(FILE *) * nchunks);
     for (int i = 0; i < nchunks; i++) {
         char tmpfilename[256];
-        snprintf(tmpfilename, sizeof(tmpfilename), "tmp%d", i);
+        snprintf(tmpfilename, sizeof(tmpfilename), "tmp%d%d", layer, offset*MAXLINES+i);
         chunkfp[i] = fopen(tmpfilename, "r");
         if (chunkfp[i] == NULL) {
             perror("fopen");
@@ -105,7 +105,22 @@ void merge_chunks(int nchunks) {
             }
         }
         // print smallest line
-        printf("%s\n", buffer[sidx]);
+        if (isend == 1) {
+            printf("%s\n", buffer[sidx]);
+        } else {
+            FILE *fout = NULL;
+            char outfilename[256];
+            snprintf(outfilename, sizeof(outfilename), "tmp%d%d", layer+1, offset);
+            fout = fopen(outfilename, "a");
+            if (fout == NULL) {
+                perror("fopen");
+                cleanup();
+                exit(EXIT_FAILURE);
+            }
+            fprintf(fout, "%s\n", buffer[sidx]);
+            fclose(fout);
+            fout = NULL;
+        }
         // replace smallest line with the line after it in the respective file
         free(buffer[sidx]);
         buffer[sidx] = NULL;
@@ -117,6 +132,23 @@ void merge_chunks(int nchunks) {
         }
         if (buffer[sidx]) TRIM_NEWLINE(buffer[sidx]);
     }
+    return;
+}
+
+void merge_ext(int nchunks) {
+    int layer = 0;
+    while (nchunks > MAXLINES) {
+        int offsetidx = 0, chunks = nchunks;
+        while (chunks > 0) {
+            int chunksize = (chunks > MAXLINES)? MAXLINES : chunks;
+            merge_chunks(chunksize, layer, offsetidx, 0);
+            offsetidx++;
+            chunks -= MAXLINES;
+        }
+        layer++;
+        nchunks = offsetidx;
+    }
+    merge_chunks(nchunks, layer, 0, 1);
     return;
 }
 
@@ -150,7 +182,7 @@ int main(int argc, char *argv[]) {
     } else {
         create_chunk(buffer, chunkidx, bufidx);
         clear_buffer();
-        merge_chunks(chunkidx+1);
+        merge_ext(chunkidx+1);
     }
 
     cleanup();

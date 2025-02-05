@@ -15,9 +15,9 @@ void help(void) {
     printf("  -h\tdisplay this help message and exit.\n");
     printf("  -r\treverse the result of comparisons\n");
     printf("  -n\tcompare strings with their numeric value\n");
-    printf("  -k COL\tsort via the column number\n");
+    printf(" -k COL\tsort via the column number\n");
     printf("  -c\tsimply check if input is sorted\n");
-    printf("  -s ALGO\tselect the sorting algorithm (b=bubblesort,q=quicksort)\n");
+    printf(" -s ALG\tselect the sorting algorithm (b=bubblesort,q=quicksort)\n");
     printf("NOTE: input a single file. multicolumnar sort is not supported.\n");
 }
 
