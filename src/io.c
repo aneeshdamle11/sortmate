@@ -4,7 +4,8 @@
 #include <string.h>
 #include "io.h"
 
-int rflag = 0, nflag = 0, kflag = 0, kopt = 0, cflag = 0;
+int rflag = 0, nflag = 0, kflag = 0, kopt = 0, cflag = 0, oflag = 0;
+char *ofile = NULL;
 char sopt = 'x';
 
 FILE *infile = NULL;
@@ -17,18 +18,20 @@ void help(void) {
     printf("  -n\tcompare strings with their numeric value\n");
     printf(" -k COL\tsort via the column number\n");
     printf("  -c\tsimply check if input is sorted\n");
-    printf(" -s ALG\tselect the sorting algorithm (b=bubblesort,q=quicksort)\n");
+    printf(" -oFILE\twrite result to specified file\n");
+    printf(" -sALGO\tselect the sorting algorithm (b=bubblesort,q=quicksort)\n");
     printf("NOTE: input a single file. multicolumnar sort is not supported.\n");
+    return;
 }
 
 void print_array(char *arr[], int n) {
-    for (int i = 0; i < n; i++) printf("%s\n", arr[i]);
+    for (int i = 0; i < n; i++) print_result(arr[i]);
 }
 
 void get_flags(int argc, char *argv[]) {
     //printf("Reading flags...\n");
     int c;
-    while ((c = getopt(argc, argv, "hrnk:cs:")) != -1) {
+    while ((c = getopt(argc, argv, "hrnk:co:s:")) != -1) {
         switch(c) {
             case 'h':
                 help();
@@ -45,6 +48,10 @@ void get_flags(int argc, char *argv[]) {
                 break;
             case 'c':
                 cflag = 1;
+                break;
+            case 'o':
+                oflag = 1;
+                ofile = optarg;
                 break;
             case 's':
                 sopt = optarg[0];
@@ -68,11 +75,8 @@ void get_flags(int argc, char *argv[]) {
 
 void open_infile(int argc, char *argv[]) {
     //printf("Opening input file(s)...\n");
-    if (optind < argc)
-        infile = fopen(argv[optind], "r");
-    else
-        infile = fopen(DEFAULT_INPUT, "r");
-
+    if (optind < argc) infile = fopen(argv[optind], "r");
+    else infile = stdin;
     if (!infile) {
         perror("invalid input");
         exit(EXIT_FAILURE);
@@ -96,4 +100,19 @@ void init_sortmate_io(int argc, char *argv[]) {
     get_flags(argc, argv);
     open_infile(argc, argv);
     return;
+}
+
+int print_result(char *result) {
+    if (oflag == 1) {
+        FILE *fp = fopen(ofile, "a");
+        if (fp == NULL) {
+            perror("fopen");
+            return 1;
+        }
+        fprintf(fp, "%s\n", result);
+        fclose(fp);
+    } else {
+        printf("%s\n", result);
+    }
+    return 0;
 }

@@ -5,7 +5,9 @@
 #include "sort.h"
 #include "io.h"
 
-#define MAXLINES (10)
+#define RAMSPACE (512)
+#define MAXLINES (RAMSPACE)
+
 #define TRIM_NEWLINE(s) (s[strcspn(s, "\n")] = '\0')
 
 char **buffer = NULL;
@@ -66,13 +68,10 @@ void create_chunk(char **buffer, int index, int nlines) {
         cleanup();
         exit(EXIT_FAILURE);
     }
-
     for (int i = 0; i < nlines; i++) {
         fprintf(tmpfile, "%s\n", buffer[i]);
     }
-
     fclose(tmpfile);
-
     return;
 }
 
@@ -106,7 +105,10 @@ void merge_chunks(int nchunks, int layer, int offset, int isend) {
         }
         // print smallest line
         if (isend == 1) {
-            printf("%s\n", buffer[sidx]);
+            if (print_result(buffer[sidx]) == 1) {
+                cleanup();
+                exit(EXIT_FAILURE);
+            }
         } else {
             FILE *fout = NULL;
             char outfilename[256];
