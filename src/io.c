@@ -2,6 +2,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include <string.h>
+#include <config.h>
 #include "io.h"
 
 int rflag = 0, nflag = 0, kflag = 0, kopt = 0, cflag = 0, oflag = 0;
@@ -11,6 +12,7 @@ char sopt = 'x';
 FILE *infile = NULL;
 
 void help(void) {
+    printf("Hello! This is " PACKAGE_STRING ".\n");
     printf("Usage: ./sortmate [OPTIONS]... [FILE]\n");
     printf("\nOptions:\n");
     printf("  -h\tdisplay this help message and exit.\n");
