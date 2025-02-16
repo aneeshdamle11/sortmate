@@ -31,7 +31,7 @@ of characters:
   behavior.
 
 ## The Implementation
-Any sort algorithm works by answering a question of "whether the current 2 elements need to be swapped". The number of times this question is asked is what determines its time complexity.
+Any sort algorithm works by answering a question of "whether the current 2 elements need to be swapped". The number of times this question is asked determines its time complexity.
 
 This notion gives us a basic design of the solution:
 
@@ -52,9 +52,11 @@ ret:
   +ve | if str1 > str2
 ```
 
-This doc gives a basic idea of the design to be followed without diving into the various complex edge cases, which are handled in the code.
-Why function pointers were initially planned to be implemented and why they weren't included in the code is explained below in parts.
-## Function pointers - the plan
+This doc gives a basic idea of the design to be followed without diving into the various complex edge cases, which can be pored over in the code.
+
+## Function pointers - something for the future
+This section explains a very useful idea in C - function pointers. Why they weren't included in the code is explained below in parts.
+
 The compar idea is generic for any sorting algorithm, and thus would be used to scale the algorithms.
 Each such algorithm should use the same compar function - bubblesort, selection sort, qsort, merge sort.
 Since we provide an option to choose the sorting algorithm, each such algorithm has an option number attached to it.
@@ -82,8 +84,7 @@ sorting_algo[opt](arg1, arg2, &compar)
 - Thus, by separating the compar function from the sorting algorithm, the solution can be scaled to fit in any number of algorithms, and
 - Using function pointers makes handling the algorithm selection easier.
 
-```
 Q. Why weren't they included?
 - The main purpose behind including function pointers was learning how to use them. Since the prose was read while creating a documentation, the learning part was already done.
-- Function pointers would work great for scaling the sorting algorithms. This project plans to include a finite amount of algorithms initially, and hard coding the solution was more readable.
-```
+- Function pointers would work great for scaling the sorting algorithms.
+- This project plans to include a finite amount of algorithms initially, and hard coding the solution was more readable.
