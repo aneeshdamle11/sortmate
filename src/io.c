@@ -21,7 +21,8 @@ void help(void) {
     printf(" -k COL\tsort via the column number\n");
     printf("  -c\tsimply check if input is sorted\n");
     printf(" -oFILE\twrite result to specified file\n");
-    printf(" -sALGO\tselect the sorting algorithm (b=bubblesort,q=quicksort)\n");
+    printf(" -sALGO\tselect the sorting algorithm ");
+    printf(" [OPTIONS: b=bubblesort, q=quicksort, s=selectionsort]\n");
     printf("NOTE: input a single file. multicolumnar sort is not supported.\n");
     return;
 }

@@ -8,6 +8,7 @@ extern FILE *infile;
 
 void get_flags(int argc, char *argv[]);
 void open_infile(int argc, char *argv[]);
+
 void close_infile(void);
 
 void print_array(char *arr[], int n);
