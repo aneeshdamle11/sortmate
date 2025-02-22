@@ -5,9 +5,9 @@
 #include <config.h>
 #include "io.h"
 
-int rflag = 0, nflag = 0, kflag = 0, kopt = 0, cflag = 0, oflag = 0;
+int rflag = 0, nflag = 0, oflag = 0;
 char *ofile = NULL;
-char sopt = 'x';
+char sopt = 'b';
 
 FILE *infile = NULL;
 
@@ -18,12 +18,10 @@ void help(void) {
     printf("  -h\tdisplay this help message and exit.\n");
     printf("  -r\treverse the result of comparisons\n");
     printf("  -n\tcompare strings with their numeric value\n");
-    printf(" -k COL\tsort via the column number\n");
-    printf("  -c\tsimply check if input is sorted\n");
     printf(" -oFILE\twrite result to specified file\n");
     printf(" -sALGO\tselect the sorting algorithm ");
     printf(" [OPTIONS: b=bubblesort, q=quicksort, s=selectionsort]\n");
-    printf("NOTE: input a single file. multicolumnar sort is not supported.\n");
+    printf("NOTE: input a single file.\n");
     return;
 }
 
@@ -34,7 +32,7 @@ void print_array(char *arr[], int n) {
 void get_flags(int argc, char *argv[]) {
     //printf("Reading flags...\n");
     int c;
-    while ((c = getopt(argc, argv, "hrnk:co:s:")) != -1) {
+    while ((c = getopt(argc, argv, "hrno:s:")) != -1) {
         switch(c) {
             case 'h':
                 help();
@@ -44,13 +42,6 @@ void get_flags(int argc, char *argv[]) {
                 break;
             case 'n':
                 nflag = 1;
-                break;
-            case 'k':
-                kflag = 1;
-                kopt = atoi(optarg);
-                break;
-            case 'c':
-                cflag = 1;
                 break;
             case 'o':
                 oflag = 1;
@@ -68,8 +59,6 @@ void get_flags(int argc, char *argv[]) {
     /*
     printf("[rflag=%d] ", rflag);
     printf("[nflag=%d] ", nflag);
-    printf("[kflag=%d,kopt=%d] ", kflag, kopt);
-    printf("[cflag=%d] ", cflag);
     printf("[sopt=%c]\n", sopt);
     */
 

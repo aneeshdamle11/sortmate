@@ -2,7 +2,7 @@
 #define IO_H (1)
 #include <stdio.h>
 
-extern int rflag, nflag, kflag, kopt, cflag;
+extern int rflag, nflag;
 extern char sopt;
 extern FILE *infile;
 

@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
     char *temp = NULL;
     while (getline(&temp, &size, infile) != -1) {
         if (bufidx == MAXLINES) {
-            sort(buffer, bufidx);
+            sortmate(buffer, bufidx);
             create_chunk(buffer, chunkidx++, bufidx);
             clear_buffer();
             bufidx = 0;
@@ -178,7 +178,7 @@ int main(int argc, char *argv[]) {
         perror("getline"), cleanup(), exit(EXIT_FAILURE);
     // check if external sorting is required
     if (chunkidx == 0) {
-        sort(buffer, bufidx);
+        sortmate(buffer, bufidx);
         print_array(buffer, bufidx);
         clear_buffer();
     } else {
