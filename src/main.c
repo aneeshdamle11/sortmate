@@ -5,15 +5,11 @@
 #include "sort.h"
 #include "io.h"
 
-#define RAMSPACE (512)
-#define MAXLINES (RAMSPACE)
-
 #define TRIM_NEWLINE(s) (s[strcspn(s, "\n")] = '\0')
 
 char **buffer = NULL;
 
 int init_buffer(void) {
-    //printf("Initializing buffer...\n");
     buffer = (char**)malloc(sizeof(char*) * MAXLINES);
     if (buffer == NULL) {
         perror("malloc");
@@ -22,40 +18,17 @@ int init_buffer(void) {
     for (int i = 0; i < MAXLINES; i++) {
         buffer[i] = NULL;
     }
-    //printf("Buffer space malloc'd\n");
     return 0;
 }
 
-void clear_buffer(void) {
-    // clear contents of buffer space (not the whole data structure)
-    for (int i = 0; i < MAXLINES; i++)
-        free(buffer[i]), buffer[i] = NULL;
-    return;
-}
-
 void init_sortmate(int argc, char *argv[]) {
-    //printf("Initializing input/output...\n");
-    // initialize io (flags and files)
-    get_flags(argc, argv);
-    open_infile(argc, argv);
+    // initialize io (options and files)
+    init_sortmate_io(argc, argv);
     // initialize buffer space
     if (init_buffer() != 0) {
-        close_infile();
+        cleanup();
         exit(EXIT_FAILURE);
     }
-    //printf("Input/output initialized\n");
-    return;
-}
-
-void cleanup(void) {
-    //printf("Cleaning up...\n");
-    // cleanup io
-    close_infile();
-    // cleanup main buffer
-    clear_buffer();
-    free(buffer);
-    buffer = NULL;
-    //printf("Cleaning done. Ciao!\n");
     return;
 }
 
@@ -155,7 +128,7 @@ void merge_ext(int nchunks) {
 }
 
 int main(int argc, char *argv[]) {
-    // initialize flags, input file and temporary space
+    // initialize options, input file and temporary space
     init_sortmate(argc, argv);
 
     int bufidx = 0, chunkidx = 0;
@@ -188,6 +161,5 @@ int main(int argc, char *argv[]) {
     }
 
     cleanup();
-
     return 0;
 }

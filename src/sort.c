@@ -5,8 +5,6 @@
 #include "sort.h"
 #include "io.h"
 
-#define LENGTH(str) (strnlen(str, MAXLEN))
-
 // ret: equal=0, smaller=-ve, greater=+ve
 int compare_char(char a, char b) {
     return a - b;
@@ -29,34 +27,6 @@ int compare_lines(char str1[], char str2[]) {
     return 0;
 }
 
-int starts_with_num(char str[]) {
-    if (LENGTH(str) > 0) return isdigit(str[0]);
-    else return 0;
-}
-
-int get_starting_num(char str[]) {
-    int n = LENGTH(str);
-    int num = 0;
-    int i = 0;
-    while (i < n && isdigit(str[i])) {
-        num = num * 10;
-        num += str[i] - '0';
-        i++;
-    }
-    return num;
-}
-
-int howmanyspaces(char *s) {
-    int count = 0;
-    while (*s) {
-        if (isblank(*s)) {
-            count++;
-            while (*s && isblank(*s)) s++;
-        } else s++;
-    }
-    return count;
-}
-
 void trim_start(char **s) {
     while (*s && isblank(**s)) (*s)++;
 }
@@ -64,16 +34,9 @@ void trim_start(char **s) {
 /* wrapper function to checks flags before actual line comparison */
 int is_swap_needed(char *l1, char *l2) {
     if (!l1 || !l2) return (l2 == NULL? 1 : 0);
-    if (nflag == 1) {
-        if (starts_with_num(l1) && starts_with_num(l2)) {
-                int res1 = get_starting_num(l1), res2 = get_starting_num(l2);
-                return res1 > res2;
-            }
-        else if (starts_with_num(l1)) return 1;
-        else if (starts_with_num(l2)) return 0;
-
-    }
-    return rflag ^ (compare_lines(l1, l2) > 0);
+    // TODO: check for keys
+    // TODO: default to line comparison
+    return compare_lines(l1, l2);
 }
 
 void swap(char **s1, char **s2) {
@@ -88,6 +51,9 @@ void bubblesort(char *arr[], int size) {
     while (size-- > 0) {
         for (int j = 0; j < size; j++) {
             if (is_swap_needed(arr[j], arr[j+1])) {
+                if (global_options.c == 1) {
+                    printf("disorder: %s", arr[j+1]), cleanup(), exit(EXIT_SUCCESS);
+                }
                 swap(&arr[j], &arr[j+1]);
             }
         }
@@ -101,6 +67,9 @@ void selectionsort(char *arr[], int size) {
         int smallestidx = i;
         for (int j = i+1; j < size; j++) {
             if (is_swap_needed(arr[smallestidx], arr[j])) {
+                if (global_options.c == 1) {
+                    printf("disorder: %s", arr[j+1]), cleanup(), exit(EXIT_SUCCESS);
+                }
                 smallestidx = j;
             }
         }
@@ -113,11 +82,14 @@ int is_qsort_swap_needed(const void* a, const void* b) {
     const char *str1 = *(const char **)a;
     const char *str2 = *(const char **)b;
     int res = is_swap_needed((char*)str1, (char*)str2);
+    if (res == 1 && global_options.c == 1) {
+        printf("disorder: %s", (char*)str2), cleanup(), exit(EXIT_SUCCESS);
+    }
     return res;
 }
 
 void sortmate(char *arr[], int size) {
-    switch (sopt) {
+    switch (global_options.x) {
         case 'b':
             bubblesort(arr, size);
             break;
