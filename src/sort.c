@@ -8,50 +8,70 @@
 #define IS_DICTIONARY_CHAR(X) (isblank(X) || isalnum(X))
 #define IS_PRINTABLE_CHAR(X) (X >= 32 && X <= 126)
 
-/*
-function to compare 2 strings - ASCII order: "LC_ALL=C"
-ret: -ve if str1 < str2, 0 if str1 == str2, +ve if str1 > str2
-*/
 void trim_start(char **s) {
     while (*s && isblank(**s)) (*s)++;
 }
 
+/*
+function to compare 2 strings - ASCII order: "LC_ALL=C"
+ret: -ve if str1 < str2, 0 if str1 == str2, +ve if str1 > str2
+*/
 int compare_fields(char s1[], char s2[], orderingoptions opts) {
     if (!s1 || !s2) return (s1 == NULL? (s2 == NULL? 0 : 1) : -1);
+    int result = 0;
     if (opts.b) { trim_start(&s1), trim_start(&s2); }
-    for (int i = 0, j = 0; !(s1[i] == '\0' && s2[j] == '\0'); i++, j++) {
-        // handle dictionary order
-        if (opts.d) {
-            if (!(IS_DICTIONARY_CHAR(s1[i]))) i++;
-            if (!(IS_DICTIONARY_CHAR(s2[j]))) j++;
+    if (opts.n)
+        result = atoi(s1) - atoi(s2);
+    else {
+        for (int i = 0, j = 0; !(s1[i] == '\0' && s2[j] == '\0'); i++, j++) {
+            // handle dictionary order
+            if (opts.d) {
+                if (!(IS_DICTIONARY_CHAR(s1[i]))) i++;
+                if (!(IS_DICTIONARY_CHAR(s2[j]))) j++;
+            }
+            // handle printable characters
+            if (opts.i) {
+                if (!(IS_PRINTABLE_CHAR(s1[i]))) i++;
+                if (!(IS_PRINTABLE_CHAR(s2[j]))) j++;
+            }
+            // handle case folding
+            result = opts.f? toupper(s1[i]) - toupper(s2[j]) : s1[i] - s2[j];
+            if (result) break;
         }
-        // handle printable characters
-        if (opts.i) {
-            if (!(IS_PRINTABLE_CHAR(s1[i]))) i++;
-            if (!(IS_PRINTABLE_CHAR(s2[j]))) j++;
-        }
-        // handle case folding
-        int result = opts.f? toupper(s1[i]) - toupper(s2[j]) : s1[i] - s2[j];
-        if (result) return result;
     }
-    return 0;
+    return opts.r ? result * -1 : result;
 }
 
 /* wrapper function to checks flags before actual line comparison */
 int is_swap_needed(char *l1, char *l2) {
     if (!l1 || !l2) return (l2 == NULL? 1 : 0);
-    // TODO: check for keys
-    // default to line comparison
-    int result = COMPARE_GLOBAL_FIELDS(l1, l2);
-    if (result != 0) return result > 0;
-    else {
-        if (global_options.s == 1) {
-            return result;
-        } else { // last resort comparison
-            return COMPARE_EMPTY_FIELDS(l1, l2) > 0;
+    int result = 0;
+    if (global_options.k) {
+        key *k = global_options.k;
+        while (k) {
+            // get fields
+            char *field1 = l1, *field2 = l2;
+            for (int i = 1; i < k->nfield; i++) {
+                if (field1) field1 = strchr(field1, ' ');
+                if (field2) field2 = strchr(field2, ' ');
+            }
+            // compare fields
+            if (IS_ORDERING_OPTIONS_EMPTY(k->ordering_options)) {
+                result = COMPARE_GLOBAL_FIELDS(field1, field2);
+            } else {
+                result = compare_fields(field1, field2, k->ordering_options);
+            }
+            // next key if needed
+            if (result == 0) k = k->next;
+            else break;
         }
+    } else { // default to line comparison
+        result = COMPARE_GLOBAL_FIELDS(l1, l2);
     }
-    return 0;
+    if (result == 0 && global_options.s == 0) { // last resort comparison
+            result = COMPARE_EMPTY_FIELDS(l1, l2);
+    }
+    return result > 0;
 }
 
 void swap(char **s1, char **s2) {

@@ -61,7 +61,7 @@ Avery, Cory      5554132
 $ sortmate -c phonebook
 sortmate: disorder: Doe, John        5551234
 ```
-- -k [COL]: sort by column or field
+- -k [COL][OPTS]: sort by field
 ```
 $ sortmate -k 2 phonebook
 Smith, Brett     5554321
@@ -70,12 +70,22 @@ Doe, Jane        5553214
 Doe, John        5551234
 Fogarty, Suzie   555231
 
-$ sortmate -k 3 phonebook
+$ sortmate -k3 phonebook
 Doe, John        5551234
 Fogarty, Suzie   555231
 Doe, Jane        5553214
 Avery, Cory      5554132
 Smith, Brett     5554321
+
+$ # field sort also supports multiple options within the key
+$ sortmate -k3n phonebook
+$ TODO: Not working
+Fogarty, Suzie   555231
+Doe, John        5551234
+Doe, Jane        5553214
+Avery, Cory      5554132
+Smith, Brett     5554321
+
 ```
 - -n: sort by numerical value
 ```
@@ -94,15 +104,13 @@ $ sortmate -n numbers
 - Hybrid:  Combination of any of the options above is allowed
 ```
 $ # columnar numerical sort example
-$ sortmate -k 3 -n phonebook
+$ sortmate -k3n phonebook
 Fogarty, Suzie   555231
 Doe, John        5551234
 Doe, Jane        5553214
 Avery, Cory      5554132
 Smith, Brett     5554321
 ```
-
-
 
 References:
 1. https://en.wikipedia.org/wiki/Sort_(Unix)
