@@ -20,9 +20,13 @@ int compare_fields(char s1[], char s2[], orderingoptions opts) {
     if (!s1 || !s2) return (s1 == NULL? (s2 == NULL? 0 : 1) : -1);
     int result = 0;
     if (opts.b) { trim_start(&s1), trim_start(&s2); }
-    if (opts.n)
-        result = atoi(s1) - atoi(s2);
-    else {
+    /* handle numeric sort: The number begins each line and consists of
+    optional blanks, an optional ‘-’ sign */
+    if (opts.n) {
+        char *n1 = s1, *n2 = s2;
+        trim_start(&n1), trim_start(&n2);
+        result = atoi(n1) - atoi(n2);
+    } else {
         for (int i = 0, j = 0; !(s1[i] == '\0' && s2[j] == '\0'); i++, j++) {
             // handle dictionary order
             if (opts.d) {
@@ -52,8 +56,8 @@ int is_swap_needed(char *l1, char *l2) {
             // get fields
             char *field1 = l1, *field2 = l2;
             for (int i = 1; i < k->nfield; i++) {
-                if (field1) field1 = strchr(field1, ' ');
-                if (field2) field2 = strchr(field2, ' ');
+                if (field1) trim_start(&field1), field1 = strchr(field1,' ');
+                if (field2) trim_start(&field2), field2 = strchr(field2,' ');
             }
             // compare fields
             if (IS_ORDERING_OPTIONS_EMPTY(k->ordering_options)) {

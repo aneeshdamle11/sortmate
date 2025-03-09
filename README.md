@@ -79,7 +79,6 @@ Smith, Brett     5554321
 
 $ # field sort also supports multiple options within the key
 $ sortmate -k3n phonebook
-$ TODO: Not working
 Fogarty, Suzie   555231
 Doe, John        5551234
 Doe, Jane        5553214
@@ -100,16 +99,6 @@ $ sortmate -n numbers
 34
 45
 100
-```
-- Hybrid:  Combination of any of the options above is allowed
-```
-$ # columnar numerical sort example
-$ sortmate -k3n phonebook
-Fogarty, Suzie   555231
-Doe, John        5551234
-Doe, Jane        5553214
-Avery, Cory      5554132
-Smith, Brett     5554321
 ```
 
 References:
