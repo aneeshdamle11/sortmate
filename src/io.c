@@ -44,22 +44,23 @@ void print_array(char *arr[], int n) {
     for (int i = 0; i < n; i++) print_result(arr[i]);
 }
 
-void init_order_options(orderingoptions *opts) {
-    opts->b = 0;
-    opts->d = 0;
-    opts->f = 0;
-    opts->i = 0;
-    opts->n = 0;
-    opts->R = 0;
-    opts->r = 0;
-    opts->s = 0;
-    return;
+orderingoptions get_empty_ordering_options(void) {
+    orderingoptions opts;
+    opts.b = 0;
+    opts.d = 0;
+    opts.f = 0;
+    opts.i = 0;
+    opts.n = 0;
+    opts.R = 0;
+    opts.r = 0;
+    return opts;
 }
 
 void init_global_options(void) {
     global_options.c = 0;
+    global_options.s = 0;
     global_options.S = RAMSPACE;
-    init_order_options(&(global_options.global_order_options));
+    global_options.global_order_options = get_empty_ordering_options();
     global_options.k = NULL;
     global_options.o = NULL;
     global_options.x = 'b';
@@ -131,9 +132,6 @@ void handle_key_input(char *kin) {
                 case 'r':
                     ktemp.order_options.r = 1;
                     break;
-                case 's':
-                    ktemp.order_options.s = 1;
-                    break;
                 default:
                     printf("invalid ordering option %c in key %s.\n", s[0], kin);
                     exit(EXIT_SUCCESS);
@@ -198,7 +196,7 @@ void get_options(int argc, char *argv[]) {
                 global_options.S = atoi(optarg);
                 break;
             case 's':
-                global_options.global_order_options.s = 1;
+                global_options.s = 1;
                 break;
             case 'x':
                 global_options.x = optarg[0];

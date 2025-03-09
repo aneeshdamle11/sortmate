@@ -10,7 +10,7 @@
 extern FILE *infile;
 
 typedef struct {
-    int b, d, f, i, n, R, r, s;
+    int b, d, f, i, n, R, r;
 } orderingoptions;
 
 #define ORDERING_OPTIONS ("bdfinRrs")
@@ -22,7 +22,7 @@ typedef struct key {
 } key;
 
 typedef struct {
-    int c, S;
+    int c, s, S;
     orderingoptions global_order_options;
     key *k;
     char *o;
@@ -32,6 +32,7 @@ typedef struct {
 extern options global_options;
 extern char **buffer;
 
+orderingoptions get_empty_ordering_options(void);
 void init_sortmate_io(int argc, char *argv[]);
 
 void clear_buffer();

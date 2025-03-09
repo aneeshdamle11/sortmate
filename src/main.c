@@ -72,7 +72,7 @@ void merge_chunks(int nchunks, int layer, int offset, int isend) {
         // get smallest line
         int sidx = 0;
         for (int i = 0; i < nchunks-1; i++) {
-            if (compare_lines(buffer[i], buffer[i+1]) > 0) {
+            if (COMPARE_GLOBAL_FIELDS(buffer[i], buffer[i+1]) > 0) {
                 sidx = i+1;
             }
         }
