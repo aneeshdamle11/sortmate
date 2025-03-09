@@ -101,6 +101,8 @@ $ sortmate -n numbers
 100
 ```
 
+TODO: Keys, ordering options, corresponding examples
+
 References:
 1. https://en.wikipedia.org/wiki/Sort_(Unix)
 2. `man sort` (or) https://www.man7.org/linux/man-pages/man1/sort.1.html
@@ -123,22 +125,6 @@ Abc
 ABC
 def
 ```
-
-Realising where `sort` can significantly change its behavior, there are 3 types
-of characters:
-
-1. **Alphabets**:
-- Capital letters come after small, and the alphabetical order is maintained in
-  capital-small comparisons
-- *IMP: Letters are case-insensitively compared first*
-
-2. **Numbers**
-- For -n option, numerical values are sorted in after alphabets and symbols
-  (non-numerical)
-
-3. **Symbols (non alphanumeric)**
-- Symbols are sorted according to ASCII values, and no option changes this
-  behavior.
 
 #### Implementing the comparison
 Any sort algorithm works by answering the question - "Should the current 2 elements need to be swapped?". The number of times this question is asked determines its time complexity.
@@ -317,7 +303,6 @@ For the sake of brevity:
   installed in a system with `make install` as a command-line utility.
 ```
 
-
 ### What's next?
 Documented some ideas and future tasks that would be interesting to implement, and explained why haven't been done so far:
 
@@ -405,3 +390,4 @@ Thus, parallelization consumes more space, but compensates in speed.
 ```
 
 In our case, we are sorting only lines within our RAM, and the RAM space is finite. So the sorting is going to remain O(1) as the total numbers to be sorted are limited. Thus, though it tends to be tempting, parallelism here won't be of much help. But this solution can be used if the design is twirked or on the I/O.
+
