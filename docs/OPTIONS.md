@@ -73,7 +73,7 @@ Smith, Brett     5554321
 ```
 
 ## How `sortmate` deals with options
-`sortmate` internally doesn't compare lines, but "fields".
+`sortmate` internally doesn't compare lines, but **fields**.
 
 ### Field
 A field is a line or a subset of a line, defined according to a key.
